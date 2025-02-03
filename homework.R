@@ -2,6 +2,7 @@
 #For full credit, provide answers for at least 7/10
 
 #List names of students collaborating with: 
+#DERRIAN TABILIN
 
 ### SETUP: RUN THIS BEFORE STARTING ----------
 
@@ -16,7 +17,7 @@ ds <- read_csv("data_raw/rolling_stone_500.csv")
 #Use typeof to check that your conversion succeeded
 
 #ANSWER
-
+glimpse(ds$Year)
 
 ### Question 2 ---------- 
 
