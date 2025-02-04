@@ -38,7 +38,7 @@ ds
 # For example, 1971 would become 1970, 2001 would become 2000
 # Hint: read the documentation for ?floor
 
-#ANSWER #DOESNT WORK, skipped
+#ANSWER
 ds <- ds %>% 
   mutate(decades = floor(year / 10) * 10)
 ds
@@ -96,7 +96,7 @@ arrange(artistsong, year)
 # recalculate the responses from Questions 6-7 to
 # find the correct oldest, average-ist, and most recent songs
 
-#ANSWER ### DOESNT WORK, skipped
+#ANSWER ### 
 ds <- ds %>%
   mutate(year = ifelse(year < 1900, year + 100, year + 0))
 ds
@@ -120,10 +120,14 @@ arrange(artistsong, year)
 # You don't need to save the results anywhere
 # Use the pipe %>% to string the commands together
 
-#ANSWER #didn't figure out the decades so skipped
+#ANSWER
 ds %>% 
-  group_by() %>%
-  summarize()
+  filter(!is.na(decades)) %>%
+  group_by(decades) %>%
+  summarize(
+    avg_rank = mean(rank, na.rm = TRUE),
+    song_count = n()
+  )
 
 
 ### Question 10 --------
@@ -133,8 +137,8 @@ ds %>%
 # Then use slice_max() to pull the row with the most songs
 # Use the pipe %>% to string the commands together
 
-#ANSWER #can't do without decades, skipped
+#ANSWER ##SKIPPED##
 ds %>% 
-  count()
-slice_max()
+  count(decades) %>%
+  slice_max(n, n = 1)
   
