@@ -9,7 +9,8 @@
 #Load packages
 library(tidyverse)
 ds <- read_csv("data_raw/rolling_stone_500.csv")
-  
+ds
+
 ### Question 1 ---------- 
 
 #Use glimpse to check the type of "Year". 
@@ -18,6 +19,8 @@ ds <- read_csv("data_raw/rolling_stone_500.csv")
 
 #ANSWER
 glimpse(ds$Year)
+ds$Year <- as.numeric(ds$Year, na.rm = TRUE)
+typeof(ds$Year)
 
 ### Question 2 ---------- 
 
@@ -25,6 +28,9 @@ glimpse(ds$Year)
 # change ds so that all of the variables are lowercase
 
 #ANSWER
+ds <- ds %>%
+  rename_all(tolower)
+ds
 
 ### Question 3 ----------
 
@@ -32,13 +38,20 @@ glimpse(ds$Year)
 # For example, 1971 would become 1970, 2001 would become 2000
 # Hint: read the documentation for ?floor
 
-#ANSWER
+#ANSWER #DOESNT WORK, skipped
+floor(ds$year)
+
+ds$decades <- ds %>% 
+  mutate(decades = floor(year))
+ds
 
 ### Question 4 ----------
 
 # Sort the dataset by rank so that 1 is at the top
 
 #ANSWER
+ds <- arrange(ds, rank)
+ds
 
 ### Question 5 ----------
 
@@ -46,7 +59,10 @@ glimpse(ds$Year)
 # That just has the artists and songs for the top 10 songs
 
 #ANSWER
-
+top10 <- ds %>%
+  filter(rank <= 10) %>%
+  select(song:artist)
+top10
 
 ### Question 6 ----------
 
@@ -54,26 +70,44 @@ glimpse(ds$Year)
 # of all songs on the full list. Save it to a new tibble called "ds_sum"
 
 #ANSWER
-
+ds_sum <- ds %>%
+  summarize(earliest = min(year, na.rm = TRUE), 
+            latest = max(year, na.rm = TRUE),
+            average = mean(year, na.rm = TRUE))
+ds_sum
 
 ### Question 7 ----------
 
 # Use filter to find out the artists/song titles for the earliest, most 
 # recent, and average-ist years in the data set (the values obtained in Q6). 
 # Use one filter command only, and sort the responses by year
-
+ 
 #ANSWER
+artistsong <- ds %>%
+  filter(year %in% c(ds_sum$earliest,
+                     ds_sum$latest,
+                     ds_sum$average))
+arrange(artistsong, year)
 
 
 ### Question 8 ---------- 
 
-# There's and error here. The oldest song "Brass in Pocket"
+# There's an error here. The oldest song "Brass in Pocket"
 # is from 1979! Use mutate and ifelse to fix the error, 
 # recalculate decade, and then
 # recalculate the responses from Questions 6-7 to
-# find the correct oldest, averag-ist, and most recent songs
+# find the correct oldest, average-ist, and most recent songs
 
-#ANSWER
+#ANSWER ### DOESNT WORK, skipped
+ds <- ds %>%
+  mutate(year = ifelse(year == 1879, year + 100, year + 0))
+ds
+
+artistsong <- ds %>%
+  filter(year %in% c(ds_sum$earliest,
+                     ds_sum$latest,
+                     ds_sum$average))
+arrange(artistsong, year)
 
 
 ### Question 9 ---------
@@ -84,7 +118,10 @@ glimpse(ds$Year)
 # You don't need to save the results anywhere
 # Use the pipe %>% to string the commands together
 
-#ANSWER
+#ANSWER #didn't figure out the decades so skipped
+ds %>% 
+  group_by() %>%
+  summarize()
 
 
 ### Question 10 --------
@@ -94,6 +131,8 @@ glimpse(ds$Year)
 # Then use slice_max() to pull the row with the most songs
 # Use the pipe %>% to string the commands together
 
-#ANSWER
+#ANSWER #can't do without decades, skipped
+ds %>% 
+  count()
 
   
