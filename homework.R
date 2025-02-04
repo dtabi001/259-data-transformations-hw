@@ -39,10 +39,8 @@ ds
 # Hint: read the documentation for ?floor
 
 #ANSWER #DOESNT WORK, skipped
-floor(ds$year)
-
-ds$decades <- ds %>% 
-  mutate(decades = floor(year))
+ds <- ds %>% 
+  mutate(decades = floor(year / 10) * 10)
 ds
 
 ### Question 4 ----------
@@ -100,7 +98,11 @@ arrange(artistsong, year)
 
 #ANSWER ### DOESNT WORK, skipped
 ds <- ds %>%
-  mutate(year = ifelse(year == 1879, year + 100, year + 0))
+  mutate(year = ifelse(year < 1900, year + 100, year + 0))
+ds
+
+ds <- ds %>% 
+  mutate(decades = floor(year / 10) * 10)
 ds
 
 artistsong <- ds %>%
@@ -134,5 +136,5 @@ ds %>%
 #ANSWER #can't do without decades, skipped
 ds %>% 
   count()
-
+slice_max()
   
